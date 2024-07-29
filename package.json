@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "remix vite:build",
-    "dev": "npm run db:migrate && node ./server.js",
+    "dev": "node ./server.js",
     "db:migrate": "tsx ./database/migrate.ts",
     "db:generate": "drizzle-kit generate",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
@@ -23,6 +23,7 @@
     "isbot": "^4.1.0",
     "match-sorter": "^6.3.4",
     "morgan": "^1.10.0",
+    "postgres": "^3.4.4",
     "react": "^18.3.1",
     "react-dom": "^18.2.0",
     "sort-by": "^1.2.0",
