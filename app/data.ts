@@ -69,6 +69,7 @@ const fakeContacts = {
 // Handful of helper functions to be called from route loaders and actions
 export async function getContacts(query?: string | null) {
   await new Promise((resolve) => setTimeout(resolve, 500));
+  console.log({ query });
   const result = await db
     .select()
     .from(contacts)
@@ -78,7 +79,14 @@ export async function getContacts(query?: string | null) {
         ilike(contacts.last, `%${query}%`)
       )
     );
-  return result;
+  console.log({ result });
+  let contactJson = await fakeContacts.getAll();
+  if (query) {
+    contactJson = matchSorter(contactJson, query, {
+      keys: ["first", "last"],
+    });
+  }
+  return contactJson.sort(sortBy("last", "createdAt"));
 }
 
 export async function createEmptyContact() {
