@@ -1,4 +1,5 @@
 import {
+  boolean,
   integer,
   pgEnum,
   pgTable,
@@ -41,5 +42,5 @@ export const contacts = pgTable("contacts", {
   avatar: varchar("avatar", { length: 25 }),
   twitter: varchar("twitter", { length: 45 }),
   notes: varchar("twitter", { length: 246 }),
-  favorite: integer("favorite", { mode: "boolean" }),
+  favorite: boolean("favorite"),
 });
