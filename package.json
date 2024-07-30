@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "remix vite:build",
-    "dev": "node ./server.js",
+    "dev": "npm run db:migrate && node ./server.js",
     "db:migrate": "tsx ./database/migrate.ts",
     "db:generate": "drizzle-kit generate",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
