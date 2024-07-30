@@ -8,16 +8,9 @@ import { matchSorter } from "match-sorter";
 import sortBy from "sort-by";
 import invariant from "tiny-invariant";
 
-import pg from "pg";
 import { ilike, or } from "drizzle-orm";
-import * as schema from "database/schema";
-
-export const db = drizzle(
-  new pg.Pool({
-    connectionString: process.env.DB_CONNECTIONSTRING,
-  }),
-  { schema }
-);
+import { db } from "./lib/db";
+import { contacts } from "database/schema";
 
 type ContactMutation = {
   id?: string;
@@ -76,24 +69,16 @@ const fakeContacts = {
 // Handful of helper functions to be called from route loaders and actions
 export async function getContacts(query?: string | null) {
   await new Promise((resolve) => setTimeout(resolve, 500));
-  console.log({ query });
   const result = await db
     .select()
-    .from(schema.contacts)
+    .from(contacts)
     .where(
       or(
-        ilike(schema.contacts.first, `${query}`),
-        ilike(schema.contacts.last, `${query}`)
+        ilike(contacts.first, `%${query}%`),
+        ilike(contacts.last, `%${query}%`)
       )
     );
-  console.log({ result });
-  let contactJson = await fakeContacts.getAll();
-  if (query) {
-    contactJson = matchSorter(contactJson, query, {
-      keys: ["first", "last"],
-    });
-  }
-  return contactJson.sort(sortBy("last", "createdAt"));
+  return result;
 }
 
 export async function createEmptyContact() {
