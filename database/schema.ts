@@ -39,8 +39,8 @@ export const contacts = pgTable("contacts", {
   id: serial("id").primaryKey(),
   first: varchar("first", { length: 25 }),
   last: varchar("last", { length: 25 }),
-  avatar: varchar("avatar", { length: 25 }),
+  avatar: varchar("avatar", { length: 256 }),
   twitter: varchar("twitter", { length: 45 }),
-  notes: varchar("twitter", { length: 246 }),
+  notes: varchar("notes", { length: 246 }),
   favorite: boolean("favorite"),
 });

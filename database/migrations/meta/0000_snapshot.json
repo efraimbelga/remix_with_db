@@ -1,5 +1,5 @@
 {
-  "id": "9694d873-0fcd-425c-a4d5-19adaf512f05",
+  "id": "509a1bee-9b15-4546-bef7-b7116f57368e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -77,12 +77,18 @@
         },
         "avatar": {
           "name": "avatar",
-          "type": "varchar(25)",
+          "type": "varchar(256)",
           "primaryKey": false,
           "notNull": false
         },
         "twitter": {
           "name": "twitter",
+          "type": "varchar(45)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "notes": {
+          "name": "notes",
           "type": "varchar(246)",
           "primaryKey": false,
           "notNull": false

@@ -30,8 +30,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async () => {
-  const contact = await createEmptyContact();
-  return redirect(`/contacts/${contact.id}/edit`);
+  return redirect(`/new`);
 };
 
 export default function App() {
