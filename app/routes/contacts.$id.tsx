@@ -9,7 +9,7 @@ import invariant from "tiny-invariant";
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   invariant(params.id, "Missing id param");
   const contact = await getContact(params.id);
-  console.log(contact);
+
   if (!contact) {
     throw new Response("Not Found", { status: 404 });
   }
