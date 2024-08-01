@@ -17,6 +17,7 @@ import { json } from "@remix-run/node";
 
 import { createEmptyContact, getContacts } from "./data";
 import { useEffect } from "react";
+import { sqids } from "./lib/sqids";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: appStylesHref },
@@ -95,7 +96,7 @@ export default function App() {
                       className={({ isActive, isPending }) =>
                         isActive ? "active" : isPending ? "pending" : ""
                       }
-                      to={`contacts/${contact.id}`}
+                      to={`contacts/${sqids.encode([contact.id])}`}
                     >
                       {/* <Link to={`contacts/${contact.id}`}> */}
                       {contact.first || contact.last ? (

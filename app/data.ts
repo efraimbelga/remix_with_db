@@ -1,6 +1,7 @@
 import { desc, eq, ilike, or } from "drizzle-orm";
 import { db } from "./lib/db";
 import { contacts } from "database/schema";
+import { sqids } from "./lib/sqids";
 
 type ContactMutation = {
   id?: string;
@@ -12,8 +13,11 @@ type ContactMutation = {
   favorite?: boolean;
 };
 
-////////////////////////////////////////////////////////////////////////////////
-// Handful of helper functions to be called from route loaders and actions
+export type ContactRecord = ContactMutation & {
+  id: string;
+  createdAt: string;
+};
+
 export async function getContacts(query?: string | null) {
   await new Promise((resolve) => setTimeout(resolve, 500));
 
@@ -43,10 +47,13 @@ export async function createContact(newData: ContactMutation) {
 
 export async function getContact(id: string) {
   await new Promise((resolve) => setTimeout(resolve, 500));
+  const q = sqids.decode(id)[0];
+  console.log({ q });
+
   const result = await db
     .select()
     .from(contacts)
-    .where(eq(contacts.id, Number(id)));
+    .where(eq(contacts.id, Number(q)));
   return result[0];
 }
 
