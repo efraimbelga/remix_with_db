@@ -1,13 +1,17 @@
 import { ActionFunctionArgs } from "@remix-run/node";
-import { Form } from "@remix-run/react";
-import { createContact } from "~/data";
+import { Form, redirect } from "@remix-run/react";
+import { contacts } from "database/schema";
+import { User } from "~/data";
+import { db } from "~/lib/db";
+import { sqids } from "~/lib/sqids";
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const newData = Object.fromEntries(formData);
-  const contact = await createContact(newData);
+  const contact = User.parse(newData);
+  const [result] = await db.insert(contacts).values(contact).returning();
 
-  return false;
+  return redirect(`/contacts/${sqids.encode([result.id])}`);
 }
 
 const NewContact = () => {

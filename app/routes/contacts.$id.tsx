@@ -1,10 +1,15 @@
 import type { FunctionComponent } from "react";
 import { json } from "@remix-run/node";
 import { Form, useFetcher, useLoaderData } from "@remix-run/react";
-import type { ContactRecord } from "../data";
-import { getContact, updateContact } from "../data";
+
+import { getContact } from "../data";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import invariant from "tiny-invariant";
+import isImage from "is-image";
+import { db } from "~/lib/db";
+import { contacts } from "database/schema";
+import { eq } from "drizzle-orm";
+import { sqids } from "~/lib/sqids";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   invariant(params.id, "Missing id param");
@@ -14,19 +19,28 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     throw new Response("Not Found", { status: 404 });
   }
 
-  return json({ contact });
+  const avatar = isImage(contact.avatar!)
+    ? contact.avatar!
+    : "/User_icon_2.svg.png";
+
+  return json({ contact, avatar });
 };
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
   invariant(params.id, "Missing id param");
   const formData = await request.formData();
-  return updateContact(params.id, {
-    favorite: formData.get("favorite") === "true",
-  });
+
+  const id = sqids.decode(params.id)[0];
+  await db
+    .update(contacts)
+    .set({ favorite: formData.get("favorite") === "true" })
+    .where(eq(contacts.id, Number(id)));
+
+  return false;
 };
 
 export default function Contact() {
-  const { contact } = useLoaderData<typeof loader>();
+  const { contact, avatar } = useLoaderData<typeof loader>();
 
   return (
     <div id="contact">
@@ -34,7 +48,7 @@ export default function Contact() {
         <img
           alt={`${contact.first} ${contact.last} avatar`}
           key={contact.avatar}
-          src={contact.avatar}
+          src={avatar}
         />
       </div>
 
@@ -47,7 +61,7 @@ export default function Contact() {
           ) : (
             <i>No Name</i>
           )}{" "}
-          <Favorite contact={contact} />
+          <Favorite favorite={contact.favorite!} />
         </h1>
 
         {contact.twitter ? (
@@ -86,21 +100,23 @@ export default function Contact() {
 }
 
 const Favorite: FunctionComponent<{
-  contact: Pick<ContactRecord, "favorite">;
-}> = ({ contact }) => {
+  favorite: boolean;
+}> = ({ favorite }) => {
   const fetcher = useFetcher();
-  const favorite = fetcher.formData
+  const favoriteValue = fetcher.formData
     ? fetcher.formData.get("favorite") === "true"
-    : contact.favorite;
+    : favorite;
 
   return (
     <fetcher.Form method="post">
       <button
-        aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
+        aria-label={
+          favoriteValue ? "Remove from favorites" : "Add to favorites"
+        }
         name="favorite"
-        value={favorite ? "false" : "true"}
+        value={favoriteValue ? "false" : "true"}
       >
-        {favorite ? "★" : "☆"}
+        {favoriteValue ? "★" : "☆"}
       </button>
     </fetcher.Form>
   );

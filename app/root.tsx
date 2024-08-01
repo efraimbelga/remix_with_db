@@ -1,5 +1,6 @@
 import {
   Form,
+  Link,
   Links,
   Meta,
   NavLink,
@@ -15,7 +16,7 @@ import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import appStylesHref from "./app.css?url";
 import { json } from "@remix-run/node";
 
-import { createEmptyContact, getContacts } from "./data";
+import { getContacts } from "./data";
 import { useEffect } from "react";
 import { sqids } from "./lib/sqids";
 
@@ -59,8 +60,9 @@ export default function App() {
       </head>
       <body>
         <div id="sidebar">
-          {/* <Sidebar contacts={contacts} /> */}
-          <h1>Remix Contacts</h1>
+          <h1>
+            <Link to="">My Contacts</Link>
+          </h1>
           <div>
             <Form
               id="search-form"

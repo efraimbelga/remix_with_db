@@ -3,7 +3,11 @@ import { json, redirect } from "@remix-run/node";
 import { Form, useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import { getContact, updateContact } from "../data";
+import { getContact, User } from "../data";
+import { db } from "~/lib/db";
+import { contacts } from "database/schema";
+import { eq } from "drizzle-orm";
+import { sqids } from "~/lib/sqids";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   invariant(params.id, "Missing id param");
@@ -18,9 +22,15 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   invariant(params.id, "Missing id param");
 
   const formData = await request.formData();
+  const updateData = Object.fromEntries(formData);
+  const contact = User.parse(updateData);
 
-  const updates = Object.fromEntries(formData);
-  await updateContact(params.id, updates);
+  const id = sqids.decode(params.id)[0];
+  await db
+    .update(contacts)
+    .set(contact)
+    .where(eq(contacts.id, Number(id)));
+
   return redirect(`/contacts/${params.id}`);
 };
 
@@ -50,7 +60,7 @@ export default function EditContact() {
       <label>
         <span>Twitter</span>
         <input
-          defaultValue={contact.twitter}
+          defaultValue={contact.twitter!}
           name="twitter"
           placeholder="@jack"
           type="text"
@@ -60,7 +70,7 @@ export default function EditContact() {
         <span>Avatar URL</span>
         <input
           aria-label="Avatar URL"
-          defaultValue={contact.avatar}
+          defaultValue={contact.avatar!}
           name="avatar"
           placeholder="https://example.com/avatar.jpg"
           type="text"
@@ -68,7 +78,7 @@ export default function EditContact() {
       </label>
       <label>
         <span>Notes</span>
-        <textarea defaultValue={contact.notes} name="notes" rows={6} />
+        <textarea defaultValue={contact.notes!} name="notes" rows={6} />
       </label>
       <p>
         <button type="submit">Save</button>
