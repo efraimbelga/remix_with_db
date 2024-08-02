@@ -3,7 +3,7 @@ import { json, redirect } from "@remix-run/node";
 import { Form, useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import { getContact, User } from "../data";
+import { getContact, Contact } from "../data";
 import { db } from "~/lib/db";
 import { contacts } from "database/schema";
 import { eq } from "drizzle-orm";
@@ -22,8 +22,8 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   invariant(params.id, "Missing id param");
 
   const formData = await request.formData();
-  const updateData = Object.fromEntries(formData);
-  const contact = User.parse(updateData);
+  const updatedData = Object.fromEntries(formData);
+  const contact = Contact.parse(updatedData);
 
   const id = sqids.decode(params.id)[0];
   await db

@@ -4,7 +4,7 @@ import { contacts } from "database/schema";
 import { sqids } from "./lib/sqids";
 import { z } from "zod";
 
-export const User = z.object({
+export const Contact = z.object({
   first: z.string(),
   last: z.string(),
   avatar: z.string(),
