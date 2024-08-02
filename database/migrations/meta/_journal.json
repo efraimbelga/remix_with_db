@@ -15,6 +15,20 @@
       "when": 1722510796484,
       "tag": "0001_reflective_prodigy",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1722568837387,
+      "tag": "0002_warm_adam_destine",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1722569760690,
+      "tag": "0003_harsh_omega_sentinel",
+      "breakpoints": true
     }
   ]
 }

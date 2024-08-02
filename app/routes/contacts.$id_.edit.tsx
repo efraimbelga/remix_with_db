@@ -60,7 +60,7 @@ export default function EditContact() {
       <label>
         <span>Twitter</span>
         <input
-          defaultValue={contact.twitter!}
+          defaultValue={contact.twitter ? contact.twitter : ""}
           name="twitter"
           placeholder="@jack"
           type="text"
@@ -78,7 +78,11 @@ export default function EditContact() {
       </label>
       <label>
         <span>Notes</span>
-        <textarea defaultValue={contact.notes!} name="notes" rows={6} />
+        <textarea
+          defaultValue={contact.notes ? contact.notes : ""}
+          name="notes"
+          rows={6}
+        />
       </label>
       <p>
         <button type="submit">Save</button>

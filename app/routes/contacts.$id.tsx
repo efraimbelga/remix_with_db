@@ -19,8 +19,8 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     throw new Response("Not Found", { status: 404 });
   }
 
-  const avatar = isImage(contact.avatar!)
-    ? contact.avatar!
+  const avatar = isImage(contact.avatar)
+    ? contact.avatar
     : "/User_icon_2.svg.png";
 
   return json({ contact, avatar });
