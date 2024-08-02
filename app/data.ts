@@ -10,7 +10,6 @@ export const User = z.object({
   avatar: z.string(),
   twitter: z.string(),
   notes: z.string(),
-  favorite: z.boolean(),
 });
 
 export async function getContacts(query?: string | null) {

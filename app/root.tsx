@@ -61,7 +61,7 @@ export default function App() {
       <body>
         <div id="sidebar">
           <h1>
-            <Link to="">My Contacts</Link>
+            <Link to="">🏠 My Contacts</Link>
           </h1>
           <div>
             <Form
