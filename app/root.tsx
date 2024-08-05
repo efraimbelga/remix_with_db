@@ -17,7 +17,7 @@ import appStylesHref from "./app.css?url";
 import { json } from "@remix-run/node";
 
 import { getContacts } from "./data";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { sqids } from "./lib/sqids";
 
 export const links: LinksFunction = () => [
@@ -42,12 +42,10 @@ export default function App() {
   const searching =
     navigation.location &&
     new URLSearchParams(navigation.location.search).has("q");
+  const [query, setQuery] = useState(q || "");
 
   useEffect(() => {
-    const searchField = document.getElementById("q");
-    if (searchField instanceof HTMLInputElement) {
-      searchField.value = q || "";
-    }
+    setQuery(q || "");
   }, [q]);
 
   return (
@@ -67,21 +65,17 @@ export default function App() {
             <Form
               id="search-form"
               role="search"
-              onChange={(event) => {
-                const isFirstSearch = q === null;
-                submit(event.currentTarget, {
-                  replace: !isFirstSearch,
-                });
-              }}
+              onChange={(event) => submit(event.currentTarget)}
             >
               <input
                 aria-label="Search contacts"
                 className={searching ? "loading" : ""}
-                defaultValue={q || ""}
+                value={query}
                 id="q"
                 name="q"
                 placeholder="Search"
                 type="search"
+                onChange={(event) => setQuery(event.currentTarget.value)}
               />
               <div aria-hidden hidden={!searching} id="search-spinner" />
             </Form>
