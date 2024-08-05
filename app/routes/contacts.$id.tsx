@@ -47,7 +47,7 @@ export default function Contact() {
       <div>
         <img
           alt={`${contact.first} ${contact.last} avatar`}
-          key={contact.avatar}
+          key={avatar}
           src={avatar}
         />
       </div>
@@ -61,7 +61,7 @@ export default function Contact() {
           ) : (
             <i>No Name</i>
           )}{" "}
-          <Favorite favorite={contact.favorite ? contact.favorite : false} />
+          <Favorite favorite={contact.favorite || false} />
         </h1>
 
         {contact.twitter ? (

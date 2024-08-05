@@ -60,7 +60,7 @@ export default function EditContact() {
       <label>
         <span>Twitter</span>
         <input
-          defaultValue={contact.twitter ? contact.twitter : ""}
+          defaultValue={contact.twitter || ""}
           name="twitter"
           placeholder="@jack"
           type="text"
@@ -70,7 +70,7 @@ export default function EditContact() {
         <span>Avatar URL</span>
         <input
           aria-label="Avatar URL"
-          defaultValue={contact.avatar!}
+          defaultValue={contact.avatar}
           name="avatar"
           placeholder="https://example.com/avatar.jpg"
           type="text"
